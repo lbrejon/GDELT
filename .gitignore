@@ -1,6 +1,13 @@
 ### Environment
-
+__pycache__/
+venv/
 
 ### Data
-data/csv/
-data/zip/
+data/raw/csv/
+data/raw/zip/
+
+### Credentials
+# config/secret.yml
+
+### Logs
+logs/*.log
