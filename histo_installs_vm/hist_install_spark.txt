@@ -1,0 +1,67 @@
+
+# Installation de Spark sur les machines suivantes : 
+
+192.168.3.110 43  Max -------> installation OK (?)
+192.168.3.43  30  Alex ------> installation OK (?)
+192.168.3.211   54  Hippo ------> installation OK (?)
+192.168.3.241  55  Louis ------> installation OK (?)
+
+Dernière version spark : https://dlcdn.apache.org/spark/spark-3.2.3/spark-3.2.3-bin-hadoop3.2.tgz
+
+BRIDGE : ssh ubuntu@137.194.211.146
+
+Installation de spark : 
+
+ - sudo apt update && sudo apt -y full-upgrade
+
+ - sudo apt install scala -y
+
+ - wget https://dlcdn.apache.org/spark/spark-3.2.3/spark-3.2.3-bin-hadoop3.2.tgz
+
+ - tar xvf spark-3.2.3-bin-hadoop3.2.tgz 
+
+ - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+ - export PATH=$PATH:/home/ubuntu/spark-3.2.3-bin-hadoop3.2/bin
+
+ # VERIF 
+ - echo $JAVA_HOME 
+ - echo $PATH 
+
+ - source ~/.bashrc
+
+ - cd spark-3.2.3-bin-hadoop3.2/conf/
+
+ - cp spark-env.sh.template spark-env.sh
+ - cp spark-defaults.conf.template spark-defaults.conf
+
+ - nano spark-env.sh 
+	# Copier coller : 
+	export SPARK_LOCAL_IP=<LOCAL_IP_MACHINE>
+	export SPARK_MASTER_HOST=192.168.3.43 
+	export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+nano spark-defaults.conf 
+	# Copier coller : 
+	spark.master  spark://192.168.3.43:7077
+
+
+# Pont SSH entre la machine local (ex: mon Mac) et la machine master sur le bridge (Essentiel pour visualiser l'interface web du master et des workers sur l'adresse localhost:8080 depuis notre machine) 
+
+# -L host:local_port:remote_host:remote_port 
+
+ssh -L localhost:8080:192.168.3.43:8080 ubuntu@137.194.211.146
+
+
+# Tester le cluster : 
+
+ Se placer dans le répertoire spark (/spark-3.2.3-bin-hadoop3.2)
+
+ - sbin/start-master.sh sur le master 
+ - sbin/start-worker.sh 192.168.3.43:7077 sur tout les workers 
+
+ # Simuler le calcul de PI sur le cluster 
+
+ ./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://192.168.3.43:7077 examples/jars/spark-examples_2.12-3.2.3.jar 40
+
+
