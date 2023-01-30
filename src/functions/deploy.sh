@@ -3,6 +3,23 @@
 #include <libgen.h>
 
 
+# ssh lbrejon-21@ssh.enst.fr
+# ssh ubuntu@137.194.211.146
+
+# ssh tp-hadoop-43
+# ssh tp-hadoop-54
+# ssh tp-hadoop-55
+# ssh tp-hadoop-30 
+
+# mkdir /tmp/lbrejon-21;cd /tmp/lbrejon-21;ls
+# git clone 
+
+
+
+
+
+
+
 TIME=3
 
 
@@ -37,32 +54,37 @@ if $flag_files; then
     for c in ${computers[@]}; do
         # command0=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "lsof -ti | xargs kill -9") # listing and killing process
         command1=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "rm -rf $remoteFolderLogin;mkdir $remoteFolderLogin")
-        command2=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd $remoteFolderLogin;touch aaa") # copy server.py
-        # command2=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd $remoteFolderLogin;git clone ${github_repository}") # copy server.py
-        command3=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd ${remoteFolderLogin}/{GDELT};python3 ${files[0]}") # run server.py script
-        
+        # command2=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd $remoteFolderLogin;touch aaa") # copy server.py
+        command2=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd $remoteFolderLogin;git clone ${github_repository}") # clone github repository
+        command3=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd ${remoteFolderLogin}GDELT/;chmod u+x setup.sh;./setup.sh") # run setup.sh script
+        command4=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd ${remoteFolderLogin}GDELT/;source venv/bin/activate;python3 src/functions/upload_data.py") # run upload_data.py script
+
         echo
-        echo "CLEANING..."
-        echo ${command0[*]}
-        "${command0[@]}"
+        echo "CLEANING REPOSITORY..."
+        # echo ${command0[*]}
+        # "${command0[@]}"
         echo ${command1[*]}
         "${command1[@]}"
 
 
         echo
-        echo "CLONING REPOSITORY..."
+        echo "CLONING GITHUB REPOSITORY..."
         echo ${command2[*]}
         "${command2[@]}"
         # sleep $TIME
-        # echo ${command22[*]}
-        # "${command22[@]}"
+
+
+        echo
+        echo "SETUP VIRTUAL ENVIRONMENT..."
+        echo ${command3[*]}
+        "${command2[@]}"
         # sleep $TIME
 
 
-        # echo
-        # echo "UPLOAD DATA..."
-        # echo ${command2[*]}
-        # "${command2[@]}" &
+        echo
+        echo "UPLOADING DATA..."
+        echo ${command4[*]}
+        "${command4[@]}" &
     done
 fi
 

@@ -1,4 +1,5 @@
 # Imports
+import argparse
 import os
 import logging
 import re
@@ -146,11 +147,18 @@ def upload_file_to_S3_bucket(csv_files, bucket_name):
             os.remove(file_path_zip)
 
 
-
+ 
 
 if __name__ == '__main__':
     logging.info(f">>>>>>>>>> START <<<<<<<<<<")
     
+    parser = argparse.ArgumentParser(
+        description="Argument parser for parameters initialization",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("-n_rows", "--n_rows", help="Set number of rows to process", type=int, default=5)
+    args = parser.parse_args()
+
     # Load data
     data_file_path = os.path.join(RAW_DATA_DIR, 'master_file_list.txt')
     df = pd.read_csv(data_file_path, sep=' ', header=None, names=['something', 'id', 'url'])
@@ -169,24 +177,26 @@ if __name__ == '__main__':
     logging.info(f"{len(bucket_files)} files into AWS S3 bucket: {bucket_files}")
     
     # Retrieve urls to process
-    n_urls = 5
+    n_urls = args.n_rows
     df_host['in_aws'] = df_host['url'].apply(lambda x: is_in_s3_bucket(x, bucket_files=bucket_files))
     urls_to_process = df_host[df_host['in_aws']==False]['url'].tolist()
-    urls_to_process = urls_to_process[:n_urls] if n_urls is not None else urls_to_process
-    # logging.info(f"urls_to_process: {urls_to_process}")
-    logging.info(f"urls_to_process: {[f'{get_csv_category(Path(url).stem)}/{Path(url).stem}' for url in urls_to_process]}")
-    
-    # Dowload data from web to local computer
-    download_data_from_web(urls_to_process, bucket_name)
-    
-    # Upload data from local computer to AWS S3 bucket
-    csv_files = [f for f in os.listdir(RAW_CSV_DATA_DIR)]
-    upload_file_to_S3_bucket(csv_files, bucket_name)
-               
-    # Display number of files added into AWS S3 bucket 
-    bucket_files_updated = get_files_in_bucket(bucket_name)
-    logging.info(f"{len(bucket_files_updated) - len(bucket_files)} files added into AWS S3 bucket")
-    
+    if urls_to_process:
+        urls_to_process = urls_to_process[:min(n_urls, len(urls_to_process))] if n_urls is not None else urls_to_process
+        # logging.info(f"urls_to_process: {urls_to_process}")
+        logging.info(f"urls_to_process: {[f'{get_csv_category(Path(url).stem)}/{Path(url).stem}' for url in urls_to_process]}")
+        
+        # Dowload data from web to local computer
+        download_data_from_web(urls_to_process, bucket_name)
+        
+        # Upload data from local computer to AWS S3 bucket
+        csv_files = [f for f in os.listdir(RAW_CSV_DATA_DIR)]
+        upload_file_to_S3_bucket(csv_files, bucket_name)
+                
+        # Display number of files added into AWS S3 bucket 
+        bucket_files_updated = get_files_in_bucket(bucket_name)
+        logging.info(f"{len(bucket_files_updated) - len(bucket_files)} files added into AWS S3 bucket")
+    else:
+        logging.info(f"Stopping script because len(urls_to_process) = {len(urls_to_process)}")
     logging.info(f">>>>>>>>>> END <<<<<<<<<<")
 
     
