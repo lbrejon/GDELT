@@ -37,8 +37,9 @@ if $flag_files; then
     for c in ${computers[@]}; do
         # command0=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "lsof -ti | xargs kill -9") # listing and killing process
         command1=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "rm -rf $remoteFolderLogin;mkdir $remoteFolderLogin")
-        command2=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd $remoteFolderLogin;git clone ${github_repository}") # copy server.py
-        # command2=("ssh" "-J" "$bridge" "$bridge_ubuntu" "$login@$c" "cd $remoteFolderLogin;python3 ${files[0]}") # run server.py script
+        command2=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd $remoteFolderLogin;touch aaa") # copy server.py
+        # command2=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd $remoteFolderLogin;git clone ${github_repository}") # copy server.py
+        command3=("ssh" "-t" "$bridge" "ssh" "-t" "$bridge_ubuntu" "ssh" "-t" "$c" "cd ${remoteFolderLogin}/{GDELT};python3 ${files[0]}") # run server.py script
         
         echo
         echo "CLEANING..."
@@ -49,9 +50,9 @@ if $flag_files; then
 
 
         echo
-        # echo "CLONING REPOSITORY..."
-        # echo ${command2[*]}
-        # "${command2[@]}"
+        echo "CLONING REPOSITORY..."
+        echo ${command2[*]}
+        "${command2[@]}"
         # sleep $TIME
         # echo ${command22[*]}
         # "${command22[@]}"

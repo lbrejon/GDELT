@@ -161,31 +161,31 @@ if __name__ == '__main__':
     logging.info(f"host_name: {host_name}")
     hosts_file_path = CONFIG_DIR + 'hosts.pkl'
     hosts2rows = load_pickle(hosts_file_path)
-    # df_host = df.iloc[hosts2rows[host_name]].copy()
+    df_host = df.iloc[hosts2rows[host_name]].copy()
     
     # Set bucket parameters
     bucket_name = "bucket-nosql"
     bucket_files = get_files_in_bucket(bucket_name)
     logging.info(f"{len(bucket_files)} files into AWS S3 bucket: {bucket_files}")
     
-    # # Retrieve urls to process
-    # n_urls = 5
-    # df_host['in_aws'] = df_host['url'].apply(lambda x: is_in_s3_bucket(x, bucket_files=bucket_files))
-    # urls_to_process = df_host[df_host['in_aws']==False]['url'].tolist()
-    # urls_to_process = urls_to_process[:n_urls] if n_urls is not None else urls_to_process
-    # # logging.info(f"urls_to_process: {urls_to_process}")
-    # logging.info(f"urls_to_process: {[f'{get_csv_category(Path(url).stem)}/{Path(url).stem}' for url in urls_to_process]}")
+    # Retrieve urls to process
+    n_urls = 5
+    df_host['in_aws'] = df_host['url'].apply(lambda x: is_in_s3_bucket(x, bucket_files=bucket_files))
+    urls_to_process = df_host[df_host['in_aws']==False]['url'].tolist()
+    urls_to_process = urls_to_process[:n_urls] if n_urls is not None else urls_to_process
+    # logging.info(f"urls_to_process: {urls_to_process}")
+    logging.info(f"urls_to_process: {[f'{get_csv_category(Path(url).stem)}/{Path(url).stem}' for url in urls_to_process]}")
     
-    # # Dowload data from web to local computer
-    # download_data_from_web(urls_to_process, bucket_name)
+    # Dowload data from web to local computer
+    download_data_from_web(urls_to_process, bucket_name)
     
-    # # Upload data from local computer to AWS S3 bucket
-    # csv_files = [f for f in os.listdir(RAW_CSV_DATA_DIR)]
-    # upload_file_to_S3_bucket(csv_files, bucket_name)
+    # Upload data from local computer to AWS S3 bucket
+    csv_files = [f for f in os.listdir(RAW_CSV_DATA_DIR)]
+    upload_file_to_S3_bucket(csv_files, bucket_name)
                
-    # # Display number of files added into AWS S3 bucket 
-    # bucket_files_updated = get_files_in_bucket(bucket_name)
-    # logging.info(f"{len(bucket_files_updated) - len(bucket_files)} files added into AWS S3 bucket")
+    # Display number of files added into AWS S3 bucket 
+    bucket_files_updated = get_files_in_bucket(bucket_name)
+    logging.info(f"{len(bucket_files_updated) - len(bucket_files)} files added into AWS S3 bucket")
     
     logging.info(f">>>>>>>>>> END <<<<<<<<<<")
 
