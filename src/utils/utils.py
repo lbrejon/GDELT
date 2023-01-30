@@ -133,11 +133,14 @@ def create_directory(directory_path, force=True):
 
 
 def download_file_from_url(remote_url, local_dir, verbose=False):
-    # filename, _ = request.urlretrieve(remote_url, local_file)
-    wget.download(remote_url, local_dir)
-    if verbose:
-        logging.info(f"Data downloaded from '{remote_url}' url to '{local_dir}' folder.")
-
+    flag = True
+    try:
+        wget.download(remote_url, local_dir)
+        if verbose:
+            logging.info(f"Data downloaded from '{remote_url}' url to '{local_dir}' folder.")
+    except:
+        flag = False
+    return flag
 
 def unzip_file(zipfile_path_src, dir_path_dst, verbose=False):
     if verbose:

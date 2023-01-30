@@ -12,9 +12,9 @@
 # ssh tp-hadoop-30 
 
 # mkdir /tmp/lbrejon-21;cd /tmp/lbrejon-21;ls
-# git clone 
-
-
+# cd /tmp/lbrejon-21;git clone https://github.com/lbrejon/GDELT.git;ls
+# cd /tmp/lbrejon-21/GDELT/;chmod u+x setup.sh;./setup.sh
+# cd /tmp/lbrejon-21/GDELT/;source venv/bin/activate;python3 src/functions/upload_data.py n_rows 100
 
 
 

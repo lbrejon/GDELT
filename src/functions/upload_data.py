@@ -88,16 +88,19 @@ def download_data_from_web(urls_to_process, bucket_name):
         aws_filename = get_csv_category(Path(url).stem) + "/" + Path(url).stem
 
         if aws_filename not in bucket_files:
+            flag = True
             # Download data from remote url to data/raw/zip
             create_directory(RAW_ZIP_DATA_DIR)
             if not os.path.isfile(zip_file_path):
-                download_file_from_url(remote_url=url, local_dir=RAW_ZIP_DATA_DIR, verbose=True)
+                flag = download_file_from_url(remote_url=url, local_dir=RAW_ZIP_DATA_DIR, verbose=True)
+                if not flag:
+                    print(f">>>>>> Url brokken: '{url}'")
             else:
                 logging.info(f"[{row+1}/{len(urls_to_process)}] File '{zip_file_path}' already exists.")
 
             # Unzip file within data/raw/url to data/raw/csv
             create_directory(RAW_CSV_DATA_DIR)
-            if not os.path.isfile(csv_file_path):
+            if (not os.path.isfile(csv_file_path) and flag is True):
                 unzip_file(zip_file_path, RAW_CSV_DATA_DIR, verbose=True)
             else:
                 logging.info(f"[{row+1}/{len(urls_to_process)}] File '{csv_file_path}' already exists.")
