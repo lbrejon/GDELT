@@ -7,10 +7,11 @@ data/raw/csv/
 data/raw/zip/
 
 ### Functions
-src/functions/*deploy*
+src/functions/deploy.sh
+src/functions/test_deploy.py
 
 ### Credentials
-# config/secret.yml
+config/aws_secret.yml
 
 ### Logs
 logs/*.log

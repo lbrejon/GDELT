@@ -25,8 +25,8 @@ RAW_DATA_DIR = os.path.join(project_dir, os.environ.get("RAW_DATA_DIR"))
 RAW_ZIP_DATA_DIR = RAW_DATA_DIR + 'zip/'
 RAW_CSV_DATA_DIR = RAW_DATA_DIR + 'csv/'
 
-AWS_ACCESS_KEY_ID = load_yaml(CONFIG_DIR+'secret.yml')['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = load_yaml(CONFIG_DIR+'secret.yml')['AWS_SECRET_ACCESS_KEY']
+AWS_ACCESS_KEY_ID = load_yaml(CONFIG_DIR+'aws_secret.yml')['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = load_yaml(CONFIG_DIR+'aws_secret.yml')['AWS_SECRET_ACCESS_KEY']
 
 
 
