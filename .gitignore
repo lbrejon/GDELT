@@ -6,6 +6,9 @@ venv/
 data/raw/csv/
 data/raw/zip/
 
+### Functions
+src/functions/*deploy*
+
 ### Credentials
 # config/secret.yml
 
