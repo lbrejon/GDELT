@@ -94,7 +94,7 @@ def download_data_from_web(urls_to_process, bucket_name):
             if not os.path.isfile(zip_file_path):
                 flag = download_file_from_url(remote_url=url, local_dir=RAW_ZIP_DATA_DIR, verbose=True)
                 if not flag:
-                    print(f">>>>>> Url brokken: '{url}'")
+                    print(f">>>>>> Url broken: '{url}'")
             else:
                 logging.info(f"[{row+1}/{len(urls_to_process)}] File '{zip_file_path}' already exists.")
 
