@@ -106,11 +106,11 @@ def download_data_from_web(url_to_process, zip_dir=RAW_ZIP_DATA_DIR, csv_dir=RAW
     # Download data from remote url to data/raw/zip
     flag = False
     if not os.path.isfile(zip_file_path):
-        flag_not_broken = download_file_from_url(remote_url=url, local_dir=zip_dir, verbose=True)
-        flag = flag_not_broken
-        if not flag_not_broken:
+        flag = download_file_from_url(remote_url=url, local_dir=zip_dir, verbose=True)
+        if not flag:
             print(f">>>>>> Url broken: '{url}'")
     else:
+        
         logging.info(f"Zip file '{zip_file_path}' already exists.")
         
 
@@ -120,7 +120,7 @@ def download_data_from_web(url_to_process, zip_dir=RAW_ZIP_DATA_DIR, csv_dir=RAW
         os.remove(zip_file_path)
         filename = zip_file_path
     else:
-        if flag_not_broken: 
+        if flag:
             logging.info(f"Csv file '{csv_file_path}' already exists.")
         filename = None
         return filename
