@@ -68,8 +68,7 @@ def split_data_per_host(df, hosts_file_path, hosts_no=None, verbose=False):
 
 def is_uploaded(url, csv_dir):
     csv_filenames = [f for f in os.listdir(csv_dir) if os.path.isfile(f)]
-    # logging.info(f"{len(csv_filenames)} files within csv folder '{csv_dir}'")
-    flag = True if url in csv_filenames else False
+    flag = True if Path(url).stem in csv_filenames else False
     return flag
 
 
