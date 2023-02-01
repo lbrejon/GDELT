@@ -68,7 +68,7 @@ def split_data_per_host(df, hosts_file_path, hosts_no=None, verbose=False):
 
 def is_uploaded(url, csv_dir):
     csv_filenames = [f for f in os.listdir(csv_dir) if os.path.isfile(f)]
-    logging.info(f"{len(csv_filenames)} files within csv folder '{csv_dir}'")
+    # logging.info(f"{len(csv_filenames)} files within csv folder '{csv_dir}'")
     flag = True if url in csv_filenames else False
     return flag
 
@@ -104,13 +104,15 @@ def download_data_from_web(url_to_process, zip_dir=RAW_ZIP_DATA_DIR, csv_dir=RAW
 
     
     # Download data from remote url to data/raw/zip
+    flag = False
     if not os.path.isfile(zip_file_path):
-        flag = download_file_from_url(remote_url=url, local_dir=zip_dir, verbose=True)
-        if not flag:
+        flag_not_broken = download_file_from_url(remote_url=url, local_dir=zip_dir, verbose=True)
+        flag = flag_not_broken
+        if not flag_not_broken:
             print(f">>>>>> Url broken: '{url}'")
     else:
         logging.info(f"Zip file '{zip_file_path}' already exists.")
-        flag = False
+        
 
     # Unzip file from data/raw/zip to data/raw/csv
     if ((not os.path.isfile(csv_file_path)) and (flag is True)):
@@ -118,9 +120,7 @@ def download_data_from_web(url_to_process, zip_dir=RAW_ZIP_DATA_DIR, csv_dir=RAW
         os.remove(zip_file_path)
         filename = zip_file_path
     else:
-        if not flag:
-            logging.info(f"Csv file cannot be unzip beacause url is broken.")
-        else:
+        if flag_not_broken: 
             logging.info(f"Csv file '{csv_file_path}' already exists.")
         filename = None
         return filename
@@ -188,10 +188,6 @@ if __name__ == '__main__':
     n_urls = args.n_rows
     zip_dir = args.zip_dir
     csv_dir = args.csv_dir
-    
-    # Create directory
-    create_directory(zip_dir)
-    create_directory(csv_dir)
     
     # Load data
     data_file_path = os.path.join(RAW_DATA_DIR, 'master_file_list.txt')
