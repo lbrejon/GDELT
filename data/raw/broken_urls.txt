@@ -6,3 +6,7 @@ http://data.gdeltproject.org/gdeltv2/20150219080000.mentions.CSV.zip
 http://data.gdeltproject.org/gdeltv2/20150219080000.gkg.csv.zip
 http://data.gdeltproject.org/gdeltv2/20150318204500.gkg.csv.zip
 http://data.gdeltproject.org/gdeltv2/20150318210000.gkg.csv.zip
+http://data.gdeltproject.org/gdeltv2/20150226213000.gkg.csv.zip
+http://data.gdeltproject.org/gdeltv2/20150227141500.gkg.csv.zip
+http://data.gdeltproject.org/gdeltv2/20150302173000.gkg.csv.zip
+http://data.gdeltproject.org/gdeltv2/20150219094500.gkg.csv.zip

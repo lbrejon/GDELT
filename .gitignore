@@ -15,3 +15,7 @@ config/aws_secret.yml
 
 ### Logs
 logs/*.log
+
+### Others
+config/hosts_old.pkl
+report/
